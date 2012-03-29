@@ -12,7 +12,7 @@
      (fn [req]
        (if-let [body (and (json-request? req) (:body req))]
          (let [bstr (slurp body)
-               json-params (try (json/parse-string bstr) (catch Exception e nil))
+               json-params (try (json/parse-string bstr true) (catch Exception e nil))
                json-params (if json-key {json-key json-params} json-params)
                req* (assoc req
                       :json-params json-params
