@@ -21,15 +21,23 @@
 (deftest augments-with-json-content-type
   (let [req {:content-type "application/json; charset=UTF-8"
              :body (stream "{\"foo\": \"bar\"}")
-             :params {"id" 3}}
+             :params {:id 3}}
         resp (json-echo req)]
-    (is (= {"id" 3 "foo" "bar"} (:params resp)))
-    (is (= {"foo" "bar"} (:json-params resp)))))
+    (is (= {:id 3 :foo "bar"} (:params resp)))
+    (is (= {:foo "bar"} (:json-params resp)))))
+    
+(deftest params-override-json-params
+  (let [req {:content-type "application/json; charset=UTF-8"
+             :body (stream "{\"foo\": \"bar\", \"id\": \"baz\"}")
+             :params {:id 3}}
+        resp (json-echo req)]
+    (is (= {:id 3 :foo "bar"} (:params resp)))
+    (is (= {:foo "bar" :id "baz"} (:json-params resp)))))
 
 (deftest augments-with-vnd-json-content-type
   (let [req {:content-type "application/vnd.foobar+json; charset=UTF-8"
              :body (stream "{\"foo\": \"bar\"}")
-             :params {"id" 3}}
+             :params {:id 3}}
         resp (json-echo req)]
-    (is (= {"id" 3 "foo" "bar"} (:params resp)))
-    (is (= {"foo" "bar"} (:json-params resp)))))
+    (is (= {:id 3 :foo "bar"} (:params resp)))
+    (is (= {:foo "bar"} (:json-params resp)))))
