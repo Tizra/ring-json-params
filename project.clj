@@ -1,4 +1,4 @@
-(defproject daviddurand/ring-json-params "0.2.1"
+(defproject daviddurand/ring-json-params "0.2.1-SNAPSHOT"
   :description "Ring middleware for JSON params parsing."
   :dependencies
    [[org.clojure/clojure "1.5.1"]

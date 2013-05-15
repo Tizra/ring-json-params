@@ -12,7 +12,10 @@
      (fn [req]
        (if-let [body (and (json-request? req) (:body req))]
          (let [bstr (slurp body)
-               json-params (try (json/read-json bstr true false nil) (catch Exception e nil))
+               json-params (try (json/read-json bstr true false nil)
+                             (catch Exception e
+                               (.printStackTrace e)
+                               (throw (ex-info "Ill-formed JSon on request" {:status 400} e))))
                json-params (if json-key {json-key json-params} json-params)
                req* (assoc req
                       :json-params json-params
